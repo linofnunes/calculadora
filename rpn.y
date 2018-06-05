@@ -7,7 +7,7 @@
 extern int yylex( void );
 
 struct	{
-	char nome[32+1];
+	char nome[32];
 	int valor;
 	}
 	vars[100];
@@ -26,7 +26,7 @@ int yyerror( char *s )
 %}
 
 %union	{
-	double num;
+	int num;
 	char nome_var[32+1];
 	}
 
@@ -34,11 +34,14 @@ int yyerror( char *s )
 %type <num> expr
 %token <num> NUMERO
 %token <nome_var> VARIAVEL
-%right OP_IGUAL
 %left OP_SOMA OP_SUB
 %left OP_MULT OP_DIV
-%right OP_POT
+%left OP_SEN 
+%left OP_COS 
+%left OP_TAN
 %left OP_SQRT
+%right OP_POT
+%right OP_IGUAL
 %token LP
 %token RP
 %token EOL
@@ -50,7 +53,7 @@ input:	/* vazio */
 ;
 
 linha:	EOL			/* ignorar linhas vazias (e \n do par \r\n) */
-|	expr EOL		{ printf( "%d\n", $1 ); }
+|	expr EOL		{  }
 ;
 
 expr:	NUMERO			{ $$ = $1; }
@@ -62,7 +65,10 @@ expr:	NUMERO			{ $$ = $1; }
 |	expr OP_POT expr	{ $$ = pow($1,$3); }
 |	expr OP_SQRT		{ $$ = sqrt($1); }
 |	LP expr RP			{ $$ = $2 }	
-|	VARIAVEL OP_IGUAL expr	{ $$ = escreve_var($1, $3);  }	
+|	VARIAVEL OP_IGUAL expr	{ $$ = escreve_var($1, $3);  }
+|	expr OP_SEN			{ $$ = sin($1); }
+|	expr OP_COS			{ $$ = cos($1); }
+|	expr OP_TAN			{ $$ = tan($1); }	
 ;
 
 %%

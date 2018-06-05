@@ -8,7 +8,7 @@
 
 
 [0-9]+("/".[0-9]+)?	{ yylval.num = atoi(yytext);   return NUMERO;    }
-[a-zA-Z_][a-zA-Z0-9_]{0,31}	{ strcpy(yylval.nome_var, yytext); return VARIAVEL; }
+
 "+"		return OP_SOMA;
 "-"		return OP_SUB;
 "*"		return OP_MULT;
@@ -18,5 +18,10 @@
 "("		return LP;
 ")"		return RP;
 "="		return OP_IGUAL;
+"SEN"	return OP_SEN;
+"COS"	return OP_COS;
+"TAN"	return OP_TAN;
+
+[a-zA-Z_][a-zA-Z0-9_]{0,30}	{ strcpy(yylval.nome_var, yytext); return VARIAVEL; }
 [ \t]+
 [\r\n]		{ return EOL;}
