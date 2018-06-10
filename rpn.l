@@ -3,11 +3,11 @@
   #include <string.h>
   #include "rpn.tab.h"
 
-
+double yylval;
 %%
 
 
-[0-9]+("/".[0-9]+)?	{ yylval.num = atoi(yytext);   return NUMERO;    }
+-?[0-9]+("/".[0-9]+)?	{ yylval.num = atof(yytext);   return NUMERO;   }
 
 "+"		return OP_SOMA;
 "-"		return OP_SUB;
@@ -22,6 +22,8 @@
 "COS"	return OP_COS;
 "TAN"	return OP_TAN;
 
+
+
 [a-zA-Z_][a-zA-Z0-9_]{0,30}	{ strcpy(yylval.nome_var, yytext); return VARIAVEL; }
 [ \t]+
-[\r\n]		{ return EOL;}
+[\r\n]	{return EOL;}

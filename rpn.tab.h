@@ -1,5 +1,5 @@
 typedef union	{
-	int num;
+	double num;
 	char nome_var[32+1];
 	} YYSTYPE;
 #define	NUMERO	258
@@ -14,9 +14,11 @@ typedef union	{
 #define	OP_SQRT	267
 #define	OP_POT	268
 #define	OP_IGUAL	269
-#define	LP	270
-#define	RP	271
-#define	PRINT	272
+#define	OP_COMPARA	270
+#define	IF	271
+#define	LP	272
+#define	RP	273
+#define	EOL	274
 
 
 extern YYSTYPE yylval;

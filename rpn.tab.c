@@ -16,9 +16,11 @@
 #define	OP_SQRT	267
 #define	OP_POT	268
 #define	OP_IGUAL	269
-#define	LP	270
-#define	RP	271
-#define	PRINT	272
+#define	OP_COMPARA	270
+#define	IF	271
+#define	LP	272
+#define	RP	273
+#define	EOL	274
 
 #line 1 "rpn.y"
 
@@ -49,7 +51,7 @@ int yyerror( char *s )
 
 #line 28 "rpn.y"
 typedef union	{
-	int num;
+	double num;
 	char nome_var[32+1];
 	} YYSTYPE;
 
@@ -79,11 +81,11 @@ typedef
 
 
 
-#define	YYFINAL		29
+#define	YYFINAL		32
 #define	YYFLAG		-32768
-#define	YYNTBASE	18
+#define	YYNTBASE	20
 
-#define YYTRANSLATE(x) ((unsigned)(x) <= 272 ? yytranslate[x] : 21)
+#define YYTRANSLATE(x) ((unsigned)(x) <= 274 ? yytranslate[x] : 23)
 
 static const char yytranslate[] = {     0,
      2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -113,88 +115,95 @@ static const char yytranslate[] = {     0,
      2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
      2,     2,     2,     2,     2,     1,     2,     3,     4,     5,
      6,     7,     8,     9,    10,    11,    12,    13,    14,    15,
-    16,    17
+    16,    17,    18,    19
 };
 
 #if YYDEBUG != 0
 static const short yyprhs[] = {     0,
-     0,     1,     4,     6,    10,    12,    14,    18,    22,    26,
-    30,    34,    37,    41,    45,    48,    51
+     0,     1,     4,     6,     9,    11,    13,    17,    21,    25,
+    29,    33,    36,    40,    44,    47,    50,    53
 };
 
 static const short yyrhs[] = {    -1,
-    18,    19,     0,    17,     0,     4,    20,    17,     0,     3,
-     0,     4,     0,    20,     5,    20,     0,    20,     6,    20,
-     0,    20,     7,    20,     0,    20,     8,    20,     0,    20,
-    13,    20,     0,    20,    12,     0,    15,    20,    16,     0,
-     4,    14,    20,     0,    20,     9,     0,    20,    10,     0,
-    20,    11,     0
+    20,    21,     0,    19,     0,    22,    19,     0,     3,     0,
+     4,     0,    22,     5,    22,     0,    22,     6,    22,     0,
+    22,     7,    22,     0,    22,     8,    22,     0,    22,    13,
+    22,     0,    22,    12,     0,    17,    22,    18,     0,     4,
+    14,    22,     0,    22,     9,     0,    22,    10,     0,    22,
+    11,     0,    16,     4,    15,    22,     0
 };
 
 #endif
 
 #if YYDEBUG != 0
 static const short yyrline[] = { 0,
-    51,    52,    55,    56,    59,    60,    61,    62,    63,    64,
-    65,    66,    67,    68,    69,    70,    71
+    54,    55,    58,    59,    62,    63,    64,    65,    66,    67,
+    68,    69,    70,    71,    72,    73,    74,    75
 };
 
 static const char * const yytname[] = {   "$","error","$undefined.","NUMERO",
 "VARIAVEL","OP_SOMA","OP_SUB","OP_MULT","OP_DIV","OP_SEN","OP_COS","OP_TAN",
-"OP_SQRT","OP_POT","OP_IGUAL","LP","RP","PRINT","input","linha","expr",""
+"OP_SQRT","OP_POT","OP_IGUAL","OP_COMPARA","IF","LP","RP","EOL","input","linha",
+"expr",""
 };
 #endif
 
 static const short yyr1[] = {     0,
-    18,    18,    19,    19,    20,    20,    20,    20,    20,    20,
-    20,    20,    20,    20,    20,    20,    20
+    20,    20,    21,    21,    22,    22,    22,    22,    22,    22,
+    22,    22,    22,    22,    22,    22,    22,    22
 };
 
 static const short yyr2[] = {     0,
-     0,     2,     1,     3,     1,     1,     3,     3,     3,     3,
-     3,     2,     3,     3,     2,     2,     2
+     0,     2,     1,     2,     1,     1,     3,     3,     3,     3,
+     3,     2,     3,     3,     2,     2,     2,     4
 };
 
 static const short yydefact[] = {     1,
-     0,     0,     3,     2,     5,     6,     0,     0,     0,     0,
-     0,     0,     0,     0,    15,    16,    17,    12,     0,     4,
-    14,    13,     7,     8,     9,    10,    11,     0,     0
+     0,     5,     6,     0,     0,     3,     2,     0,     0,     0,
+     0,     0,     0,     0,     0,    15,    16,    17,    12,     0,
+     4,    14,     0,    13,     7,     8,     9,    10,    11,    18,
+     0,     0
 };
 
 static const short yydefgoto[] = {     1,
-     4,     8
+     7,     8
 };
 
 static const short yypact[] = {-32768,
-     0,    24,-32768,-32768,-32768,   -13,    24,     1,    24,    35,
-    24,    24,    24,    24,-32768,-32768,-32768,-32768,    24,-32768,
--32768,-32768,    25,    25,    43,    43,   -11,     3,-32768
+     0,-32768,   -13,     8,    27,-32768,-32768,    28,    27,     5,
+    43,    27,    27,    27,    27,-32768,-32768,-32768,-32768,    27,
+-32768,-32768,    27,-32768,    -2,    -2,    62,    62,   -11,    57,
+    13,-32768
 };
 
 static const short yypgoto[] = {-32768,
--32768,    12
+-32768,     9
 };
 
 
-#define	YYLAST		56
+#define	YYLAST		75
 
 
-static const short yytable[] = {    28,
-     9,    19,    29,     2,     0,    11,    12,    13,    14,    15,
-    16,    17,    18,    19,     0,     0,     3,    20,    10,     0,
-    21,     0,    23,    24,    25,    26,     5,     6,     0,     0,
-    27,    13,    14,    15,    16,    17,    18,    19,     7,    11,
-    12,    13,    14,    15,    16,    17,    18,    19,     0,     0,
-    22,    15,    16,    17,    18,    19
+static const short yytable[] = {    31,
+     9,    20,     2,     3,    14,    15,    16,    17,    18,    19,
+    20,    10,    32,    11,     0,     4,     5,    22,     6,    23,
+    25,    26,    27,    28,     0,     0,     0,     0,    29,     2,
+     3,    30,    12,    13,    14,    15,    16,    17,    18,    19,
+    20,     0,     4,     5,     0,     0,    21,    12,    13,    14,
+    15,    16,    17,    18,    19,    20,     0,     0,     0,     0,
+    24,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+    16,    17,    18,    19,    20
 };
 
 static const short yycheck[] = {     0,
-    14,    13,     0,     4,    -1,     5,     6,     7,     8,     9,
-    10,    11,    12,    13,    -1,    -1,    17,    17,     7,    -1,
-     9,    -1,    11,    12,    13,    14,     3,     4,    -1,    -1,
-    19,     7,     8,     9,    10,    11,    12,    13,    15,     5,
-     6,     7,     8,     9,    10,    11,    12,    13,    -1,    -1,
-    16,     9,    10,    11,    12,    13
+    14,    13,     3,     4,     7,     8,     9,    10,    11,    12,
+    13,     4,     0,     5,    -1,    16,    17,     9,    19,    15,
+    12,    13,    14,    15,    -1,    -1,    -1,    -1,    20,     3,
+     4,    23,     5,     6,     7,     8,     9,    10,    11,    12,
+    13,    -1,    16,    17,    -1,    -1,    19,     5,     6,     7,
+     8,     9,    10,    11,    12,    13,    -1,    -1,    -1,    -1,
+    18,     5,     6,     7,     8,     9,    10,    11,    12,    13,
+     9,    10,    11,    12,    13
 };
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "bison.simple"
@@ -689,60 +698,64 @@ yyreduce:
   switch (yyn) {
 
 case 4:
-#line 56 "rpn.y"
-{  ;
+#line 59 "rpn.y"
+{  printf( "%f\n", yyvsp[-1].num );  ;
     break;}
 case 5:
-#line 59 "rpn.y"
+#line 62 "rpn.y"
 { yyval.num = yyvsp[0].num; ;
     break;}
 case 6:
-#line 60 "rpn.y"
+#line 63 "rpn.y"
 { yyval.num = le_var(yyvsp[0].nome_var);  ;
     break;}
 case 7:
-#line 61 "rpn.y"
+#line 64 "rpn.y"
 { yyval.num = yyvsp[-2].num + yyvsp[0].num; ;
     break;}
 case 8:
-#line 62 "rpn.y"
+#line 65 "rpn.y"
 { yyval.num = yyvsp[-2].num - yyvsp[0].num; ;
     break;}
 case 9:
-#line 63 "rpn.y"
+#line 66 "rpn.y"
 { yyval.num = yyvsp[-2].num * yyvsp[0].num; ;
     break;}
 case 10:
-#line 64 "rpn.y"
+#line 67 "rpn.y"
 { yyval.num = yyvsp[-2].num / yyvsp[0].num; ;
     break;}
 case 11:
-#line 65 "rpn.y"
+#line 68 "rpn.y"
 { yyval.num = pow(yyvsp[-2].num,yyvsp[0].num); ;
     break;}
 case 12:
-#line 66 "rpn.y"
+#line 69 "rpn.y"
 { yyval.num = sqrt(yyvsp[-1].num); ;
     break;}
 case 13:
-#line 67 "rpn.y"
+#line 70 "rpn.y"
 { yyval.num = yyvsp[-1].num ;
     break;}
 case 14:
-#line 68 "rpn.y"
+#line 71 "rpn.y"
 { yyval.num = escreve_var(yyvsp[-2].nome_var, yyvsp[0].num);  ;
     break;}
 case 15:
-#line 69 "rpn.y"
+#line 72 "rpn.y"
 { yyval.num = sin(yyvsp[-1].num); ;
     break;}
 case 16:
-#line 70 "rpn.y"
+#line 73 "rpn.y"
 { yyval.num = cos(yyvsp[-1].num); ;
     break;}
 case 17:
-#line 71 "rpn.y"
+#line 74 "rpn.y"
 { yyval.num = tan(yyvsp[-1].num); ;
+    break;}
+case 18:
+#line 75 "rpn.y"
+{ yyval.num = le_var(yyvsp[-2].nome_var) == yyvsp[-1]; ;
     break;}
 }
    /* the action file gets copied in in place of this dollarsign */
@@ -942,7 +955,7 @@ yyerrhandle:
   yystate = yyn;
   goto yynewstate;
 }
-#line 74 "rpn.y"
+#line 80 "rpn.y"
 
 
 

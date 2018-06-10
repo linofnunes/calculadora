@@ -26,7 +26,7 @@ int yyerror( char *s )
 %}
 
 %union	{
-	int num;
+	double num;
 	char nome_var[32+1];
 	}
 
@@ -42,9 +42,11 @@ int yyerror( char *s )
 %left OP_SQRT
 %right OP_POT
 %right OP_IGUAL
+
 %token LP
 %token RP
 %token EOL
+
 
 %%
 
@@ -52,8 +54,8 @@ input:	/* vazio */
 |	input linha
 ;
 
-linha:	EOL			/* ignorar linhas vazias (e \n do par \r\n) */
-|	expr EOL		{  }
+linha:	EOL		/* ignorar linhas vazias (e \n do par \r\n) */
+|	 expr EOL		{  printf( "%f\n", $1 );  }
 ;
 
 expr:	NUMERO			{ $$ = $1; }
@@ -68,7 +70,10 @@ expr:	NUMERO			{ $$ = $1; }
 |	VARIAVEL OP_IGUAL expr	{ $$ = escreve_var($1, $3);  }
 |	expr OP_SEN			{ $$ = sin($1); }
 |	expr OP_COS			{ $$ = cos($1); }
-|	expr OP_TAN			{ $$ = tan($1); }	
+|	expr OP_TAN			{ $$ = tan($1); }
+
+
+	
 ;
 
 %%
